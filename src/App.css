@@ -1,38 +1,141 @@
-.App {
+body,html{
+  background: rgb(53, 77, 77);
+  padding:0;
+  margin:0;
+  width:100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+#root{
+  width:100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.box{
+  width:90%;
+  height:95%;
+  background:rgba(51, 51, 51, 0.562);
+  border-radius: 5px;
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+.stack{
+  flex:.13;
+  display: flex;
+  justify-content: center;
+}
+.board{
+  flex:.74;
+  display: flex;
+  justify-content: center;
+}
+.plate{
+  background:rgb(100, 104, 98);
+  display: flex;
+  justify-content: space-between;
+  transition: width .5s;
+}
+
+.plate.me{
+  min-width: 500px;
+  border-radius: 10px 10px 0 0;
+}
+.plate.opponet{
+  min-width: 300px;
+  border-radius:0 0 10px 10px
+}
+.plate .profile{
+  width:80px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+}
+.plate .profile .image{
+  width: 85%;
+  height: 85%;
+  background: rgba(0, 0, 0, 0.479);
+  border-radius: 5px;
+}
+.plate .point{
+  flex:.2;
+  color:#999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding:10px auto;
+  min-width: 70px;
+}
+.plate .point span{
+  margin:5px;
+  color:#fff;
+}
+.plate .tile{
+  flex:1;
 }
 
-.App-link {
-  color: #61dafb;
+.simi{
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 0;
+  border-radius: 10px 10px 0 0;
+  background:rgba(107, 134, 140, 0.16);
+  padding:20px 10px 150px;
+}
+.simi-row{
+  display: flex;
+  justify-content: center;
+  margin-bottom:5px;
+}
+.simi-col{
+  margin:2px;
+  width:25px;
+  height: 50px;
+  position: relative;
+  background: #c4c4c445;
+  border-radius: 5px;
+}
+.simi-col img{
+  width:25px;
+}
+.tile{
+  display: flex;
+  align-items: center;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.user-hand{
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+.opponet .user-hand{
+}
+.opponet .hand-tile{
+  margin-right:-8px;
+}
+.me .hand-tile{
+  margin:2px;
+}
+.opponet .hand-tile img{
+  width:25px;
+  box-shadow: 0 0 10px rgb(112, 112, 112);
+  border-radius: 5px;
+}
+.me .hand-tile img{
+  width:35px;
+}
+.abs{
+  position: absolute;
+  left: 0;
+  top:0;
+  transition: all .5s;
+}
+.hand-tile.none{
+  visibility: hidden ;
 }
