@@ -140,7 +140,7 @@ body,html{
   border-radius: 5px;
 }
 .me .hand-tile img{
-  width:35px;
+  width:34px;
 }
 .abs{
   position: absolute;
@@ -163,6 +163,6 @@ body,html{
   opacity: 1;
 }
 .board-dir .abs{
-  width:35px;
+  width:34px;
   transform-origin: 50% 50% 0px;
 }

@@ -10,7 +10,7 @@ const initialState = {
         opponet: []
     },
     dices: [],
-    board: [[4, 3]],
+    board: [[3, 3], [4, 3], [5, 4], [6, 6], [6, 5]],
     index: -1,
     turn: '',
     picker: false
