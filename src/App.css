@@ -1,5 +1,5 @@
 body,html{
-  background: rgb(53, 77, 77);
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)rgb(53, 77, 77);
   padding:0;
   margin:0;
   width:100vw;
@@ -35,7 +35,7 @@ body,html{
   justify-content: center;
 }
 .plate{
-  background:rgb(100, 104, 98);
+  background:rgba(19, 24, 45, 0.31);
   display: flex;
   justify-content: space-between;
   transition: width .5s;
@@ -56,10 +56,13 @@ body,html{
   justify-content: center;
 }
 .plate .profile .image{
-  width: 85%;
-  height: 85%;
-  background: rgba(0, 0, 0, 0.479);
+  width: 70%;
+  height: 70%;
+  background:rgba(242, 228, 15, 0.85);
   border-radius: 5px;
+}
+.plate.me .profile .image{
+  background: rgba(242, 15, 100, 0.85);
 }
 .plate .point{
   flex:.2;
@@ -81,13 +84,22 @@ body,html{
 
 .simi{
   position: absolute;
-  left: 10px;
-  right: 10px;
+  left: 20px;
+  right: 20px;
   bottom: 0;
   border-radius: 10px 10px 0 0;
-  background:rgba(107, 134, 140, 0.16);
+  background:rgba(62, 72, 75, 0.753);
   padding:20px 10px 150px;
+  opacity: 0;
+  transform: translateY(300px);
+  transition: all ease-in-out .5s;
 }
+.simi.active{
+  opacity: 1;
+  transform: translateY(0px);
+  z-index: 999;
+}
+
 .simi-row{
   display: flex;
   justify-content: center;
@@ -134,8 +146,23 @@ body,html{
   position: absolute;
   left: 0;
   top:0;
-  transition: all .5s;
+  transition: all .4s;
 }
 .hand-tile.none{
   visibility: hidden ;
+}
+
+.board-dir{
+  transition: transform 450ms ease-in-out 16ms, opacity 650ms ease-in 1ms;
+  /* transform: scale(0.854286) translate3d(650px, 177px, 0px); */
+  position: absolute;
+  z-index: 15;
+  left: 50%;
+  top: calc(50% - 30px);
+  pointer-events: none;
+  opacity: 1;
+}
+.board-dir .abs{
+  width:35px;
+  transform-origin: 50% 50% 0px;
 }

@@ -6,9 +6,8 @@ export const animateContext = createContext();
 export const AnimateContextProvider = props => {
     const from = useRef(null);
     const to = useRef(null);
-    const timing = 500;
 
-    const start = () => {
+    const start = (timing = 400) => {
         return new Promise((resolve, reject) => {
             const { x, y } = getDistance(to.current, from.current);
             const { width: fw, height: fh } = getPositionAtCenter(from.current);

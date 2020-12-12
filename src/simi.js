@@ -5,29 +5,17 @@ import tiles from './tiles';
 import { chunk } from './helper';
 
 function Simi() {
-    const [{ simi, index }, dispatch] = useContext(storeContext);
-    const { from, start } = useContext(animateContext);
-
-    const refs = useMemo(() =>
-        Array.from({ length: simi.length }).map(() => createRef())
-        , []);
+    const [{ simi, index, picker }, dispatch] = useContext(storeContext);
+    const { from } = useContext(animateContext);
 
     const anim = (i) => {
-        dispatch({ type: 'index', data: i });
+        dispatch({ type: 'index', data: [i, 'me'] });
     }
-    useEffect(() => {
-        if (index >= 0) {
-            start()
-                .then(() => {
-                    dispatch({ type: 'deck' });
-                })
-        }
-    }, [index]);
 
     const list = chunk(simi, 14);
     return (
 
-        <div className={"simi "}>
+        <div className={"simi " + (picker ? 'active' : '')}>
             {list.map((items, i) =>
                 <div className={"simi-row"} key={i}>
                     {items.map((item, j) => {
