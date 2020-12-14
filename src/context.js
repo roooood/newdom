@@ -10,10 +10,13 @@ const initialState = {
         opponet: []
     },
     dices: [],
-    board: [[3, 3], [4, 3], [5, 4], [6, 6], [6, 5]],
+    board: [],
+    selected: null,
     index: -1,
     turn: '',
-    picker: false
+    picker: false,
+    width: null,
+    height: null
 };
 
 const reducer = (state, { type, data }) => {
@@ -22,7 +25,16 @@ const reducer = (state, { type, data }) => {
             return { ...state, ...data };
         }
         case 'board': {
-            state.board.push(data)
+            state.selected = data;
+            if (state.board.length == 0) {
+                state.board.push(data)
+            }
+            return { ...state };
+        }
+        case 'xboard': {
+            if (!state.board.find(e => e[0] == data[0] && e[1] == data[1])) {
+                state.board.push(data)
+            }
             return { ...state };
         }
         case 'anim': {

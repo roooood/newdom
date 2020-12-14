@@ -30,4 +30,4 @@ const tiles = {
     '6-6': require('./img/6-6.png'),
     'blank': require('./img/blank.png')
 }
-export default tiles;
+export default (item = null) => item == null ? tiles['blank']?.default : tiles[item.join('-')]?.default;

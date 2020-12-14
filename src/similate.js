@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useRef } from 'react';
 import Stack from './stack';
 import Simi from './simi';
 import Board from './board';
@@ -6,11 +6,13 @@ import { storeContext } from './context';
 import { animateContext } from './animate';
 
 import initialData from './start';
+import { getPositionAtCenter } from './helper';
 const { simi, deck, dices } = initialData();
 
 export default (props) => {
     const [{ index }, dispatch] = useContext(storeContext);
     const { start } = useContext(animateContext);
+    const board = useRef(null);
 
     const pick = (me, opponet) => {
         if (me.length >= opponet.length) {
@@ -28,13 +30,14 @@ export default (props) => {
             simi[ind] = true;
         }
         else {
-            dispatch({ type: 'all', data: { picker: false } });
+            dispatch({ type: 'all', data: { picker: false, board: [] } });
 
         }
     }
 
     useEffect(() => {
-        dispatch({ type: 'all', data: { dices, picker: true } });
+        const { width, height } = getPositionAtCenter(board.current);
+        dispatch({ type: 'all', data: { dices, picker: true, width, height } });
         setTimeout(() => {
             animate();
         }, 500);
@@ -55,7 +58,7 @@ export default (props) => {
             <div className="stack">
                 <Stack type="opponet" />
             </div>
-            <div className="board">
+            <div className="board" ref={board}>
                 <Board />
             </div>
             <div className="stack">

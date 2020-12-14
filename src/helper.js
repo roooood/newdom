@@ -1,6 +1,9 @@
 
 
 
+export function equal(a, b) {
+    return a?.[0] == b?.[0] && a?.[1] == b?.[1]
+}
 export function clone(arr) {
     let newObj = (arr instanceof Array) ? [] : {};
     for (let i in arr) {
@@ -85,7 +88,8 @@ export function getPositionAtCenter(element) {
     return {
         x: left + width / 2,
         y: top + height / 2,
-        width, height
+        width: Math.round(width),
+        height: Math.round(height),
     };
 }
 export function getDistance(a, b) {

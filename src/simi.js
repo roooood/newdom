@@ -27,7 +27,7 @@ function Simi() {
                                     <img
                                         ref={index == count ? from : null}
                                         onClick={() => anim(count)}
-                                        className="abs" src={item === true ? tiles.blank.default : tiles[item.join('-')].default}
+                                        className="abs" src={item === true ? tiles() : tiles(item)}
                                     />}
                             </div>
                         )

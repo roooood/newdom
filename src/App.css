@@ -15,10 +15,10 @@ body,html{
   text-align: center;
 }
 .box{
-  width:90%;
-  height:95%;
+  width:95%;
+  height:90%;
   background:rgba(51, 51, 51, 0.562);
-  border-radius: 5px;
+  border-radius: 25px;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -42,11 +42,11 @@ body,html{
 }
 
 .plate.me{
-  min-width: 500px;
+  min-width: 300px;
   border-radius: 10px 10px 0 0;
 }
 .plate.opponet{
-  min-width: 300px;
+  min-width: 200px;
   border-radius:0 0 10px 10px
 }
 .plate .profile{
@@ -89,7 +89,7 @@ body,html{
   bottom: 0;
   border-radius: 10px 10px 0 0;
   background:rgba(62, 72, 75, 0.753);
-  padding:20px 10px 150px;
+  padding:5vh 0 20vh;
   opacity: 0;
   transform: translateY(300px);
   transition: all ease-in-out .5s;
@@ -135,17 +135,22 @@ body,html{
   margin:2px;
 }
 .opponet .hand-tile img{
-  width:25px;
+  width:2.5vw;
   box-shadow: 0 0 10px rgb(112, 112, 112);
   border-radius: 5px;
 }
 .me .hand-tile img{
-  width:34px;
+  width:4vw;
+  transition: all .4s;
+}
+.me .hand-tile img.selected{
+  margin-top: -30px;
 }
 .abs{
   position: absolute;
   left: 0;
   top:0;
+  border-radius: 8px;
   transition: all .4s;
 }
 .hand-tile.none{
@@ -163,6 +168,15 @@ body,html{
   opacity: 1;
 }
 .board-dir .abs{
-  width:34px;
+  width:4vw;
   transform-origin: 50% 50% 0px;
+}
+.board-dir .selected{
+  border-radius: 8px;
+  box-shadow: 0px 0px 2px 2px #ee7752;
+}
+
+.board-dir .selected img{
+  width: 100%;
+  opacity: .2;
 }

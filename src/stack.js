@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { storeContext } from './context';
 import { animateContext } from './animate';
-
+import { equal } from './helper';
 import tiles from './tiles';
 
 function Stack({ type }) {
-    const [{ deck, index, turn }, dispatch] = useContext(storeContext);
-    const { to } = useContext(animateContext);
+    const [{ deck, selected, index, turn, width: w }, dispatch] = useContext(storeContext);
+    const width = Math.min(Math.round(w / 25), 34);
+    const { to, from } = useContext(animateContext);
     const toBoard = (item) => {
         dispatch({ type: 'board', data: item })
     }
@@ -20,25 +21,32 @@ function Stack({ type }) {
             </div>
             <div className="tile">
                 <div className={"user-hand " + type}>
-                    {data.map((item, i) =>
+                    {width && data.map((item, i) =>
                         <div className={"hand-tile"} key={i} >
                             {type == 'me'
-                                ? <img onClick={() => toBoard(item)} src={tiles[item.join('-')].default} />
-                                : <img src={tiles.blank.default} />
+                                ?
+                                <img
+                                    ref={equal(selected, item) ? from : null}
+                                    className={equal(selected, item) ? 'selected' : ''}
+                                    style={{ width }}
+                                    onClick={() => toBoard(item)}
+                                    src={tiles(item)}
+                                />
+                                : <img style={{ width: width / 1.5 }} src={tiles()} />
                             }
                         </div>
                     )}
                     {(index >= 0 && turn == type) &&
                         <div className={"hand-tile none"}  >
-                            <img ref={to} src={tiles.blank.default} />
+                            <img style={{ width: type == 'me' ? width : width / 1.5 }} ref={to} src={tiles()} />
                         </div>
                     }
                 </div>
             </div>
             <div className="point">
                 <span>0</span>
-        Point
-      </div>
+                Point
+            </div>
         </div>
     )
 }

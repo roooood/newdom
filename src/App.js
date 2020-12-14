@@ -11,7 +11,6 @@ function App() {
     <StoreContextProvider >
       <AnimateContextProvider >
         <Similate />
-
       </AnimateContextProvider>
     </StoreContextProvider>
 
