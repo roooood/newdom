@@ -1,4 +1,5 @@
 import React, { useReducer, createContext } from "react";
+import { equal } from './helper';
 
 export const storeContext = createContext();
 
@@ -11,7 +12,7 @@ const initialState = {
     },
     dices: [],
     board: [],
-    selected: null,
+    selected: [],
     index: -1,
     turn: '',
     picker: false,
@@ -24,16 +25,15 @@ const reducer = (state, { type, data }) => {
         case 'all': {
             return { ...state, ...data };
         }
-        case 'board': {
-            state.selected = data;
-            if (state.board.length == 0) {
-                state.board.push(data)
-            }
+        case 'temp-board': {
+            state.selected.push(data);
             return { ...state };
         }
-        case 'xboard': {
-            if (!state.board.find(e => e[0] == data[0] && e[1] == data[1])) {
-                state.board.push(data)
+        case 'board': {
+            if (!state.board.find(e => equal([data], e))) {
+                state.board.push(data);
+                state.selected = [];
+                state.deck['me'] = state.deck['me'].filter(e => !equal([data], e));
             }
             return { ...state };
         }

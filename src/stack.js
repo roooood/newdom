@@ -9,7 +9,7 @@ function Stack({ type }) {
     const width = Math.min(Math.round(w / 25), 34);
     const { to, from } = useContext(animateContext);
     const toBoard = (item) => {
-        dispatch({ type: 'board', data: item })
+        dispatch({ type: 'temp-board', data: item })
     }
     const data = deck[type];
     return (
@@ -22,7 +22,7 @@ function Stack({ type }) {
             <div className="tile">
                 <div className={"user-hand " + type}>
                     {width && data.map((item, i) =>
-                        <div className={"hand-tile"} key={i} >
+                        <div className={"hand-tile"} key={Math.random()} >
                             {type == 'me'
                                 ?
                                 <img

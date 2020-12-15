@@ -2,7 +2,12 @@
 
 
 export function equal(a, b) {
-    return a?.[0] == b?.[0] && a?.[1] == b?.[1]
+    for (let i of a ?? []) {
+        if (i?.[0] == b?.[0] && i?.[1] == b?.[1]) {
+            return true;
+        }
+    }
+    return false;
 }
 export function clone(arr) {
     let newObj = (arr instanceof Array) ? [] : {};

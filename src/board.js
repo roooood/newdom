@@ -12,41 +12,43 @@ function Board() {
     const halfWidth = width / 2 + 1;
     const [selectedTo, setSelectedTo] = useState(null);
     const [p, setPrev] = useState(0);
+    const temp = [...board, ...selected];
     let prev = 0;
 
     useEffect(() => {
         if (selectedTo != null)
-            start();
+            start({ transform: 'rotate(' + selectedTo[1] + 'deg)', center: false })
+                .then(() => {
+                    dispatch({ type: 'board', data: selectedTo[0] });
+                    setSelectedTo(null);
+                })
     }, [selectedTo]);
+
     useEffect(() => {
-        if (board.length > 1)
+        if (temp.length > 1)
             setPrev(prev)
-    }, [board.length]);
+    }, [temp.length]);
 
     const renderDice = (item, i) => {
         let same = item[0] == item[1];
         let rotate = same ? 0 : 90;
         let transform = 'translateX(-' + ((same && prev) ? prev - halfWidth + 1 : prev) + 'px) rotate(' + rotate + 'deg)';
         prev += (same ? (prev == 0 ? width + halfWidth : width + 1) : fullWidth);
-        // if (equal(item, selected)) {
-        //     return (
-        //         <div
-        //             key={i}
-        //             ref={equal(selectedTo, item) ? to : null}
-        //             className={"abs selected"}
-        //             style={{ transform, width, height: width * 2 - 2 }}
-        //             onClick={() => setSelectedTo(item)}
-        //         >
-        //             <img
-        //                 src={tiles(item)}
-        //                 onClick={() => setSelectedTo(item)}
-        //             />
-        //         </div>
-        //     )
-        // }
+        if (equal(selected, item)) {
+            return (
+                <div
+                    key={i}
+                    ref={equal([selectedTo?.[0]], item) ? to : null}
+                    className={"abs selected"}
+                    style={{ transform, width, height: width * 2 - 2 }}
+                    onClick={() => setSelectedTo([item, rotate])}
+                >
+                    <img src={tiles(item)} />
+                </div>
+            )
+        }
         return (
             <img
-                onClick={() => alert('item')}
                 key={i}
                 className={"abs"}
                 style={{ transform, width }}
@@ -57,7 +59,7 @@ function Board() {
     let transform = 'translateX(' + (p / 2.25) + 'px)';
     return (
         <div className={"board-dir"} style={{ transform }}>
-            {w && board.map((item, i) => renderDice(item, i))}
+            {w && temp.map((item, i) => renderDice(item, i))}
         </div>
 
     )

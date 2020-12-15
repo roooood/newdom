@@ -28,6 +28,7 @@ body,html{
   flex:.13;
   display: flex;
   justify-content: center;
+  z-index: 1;
 }
 .board{
   flex:.74;
@@ -91,13 +92,12 @@ body,html{
   background:rgba(62, 72, 75, 0.753);
   padding:5vh 0 20vh;
   opacity: 0;
-  transform: translateY(300px);
+  transform: translateY(300px) scale(.3);
   transition: all ease-in-out .5s;
 }
 .simi.active{
   opacity: 1;
   transform: translateY(0px);
-  z-index: 999;
 }
 
 .simi-row{
@@ -115,6 +115,7 @@ body,html{
 }
 .simi-col img{
   width:25px;
+  z-index: 999999999999999;
 }
 .tile{
   display: flex;
@@ -141,7 +142,7 @@ body,html{
 }
 .me .hand-tile img{
   width:4vw;
-  transition: all .4s;
+  transition: all ease-in-out .4s;
 }
 .me .hand-tile img.selected{
   margin-top: -30px;
@@ -164,7 +165,6 @@ body,html{
   z-index: 15;
   left: 50%;
   top: calc(50% - 30px);
-  pointer-events: none;
   opacity: 1;
 }
 .board-dir .abs{
@@ -173,9 +173,13 @@ body,html{
 }
 .board-dir .selected{
   border-radius: 8px;
-  box-shadow: 0px 0px 2px 2px #ee7752;
+  box-shadow: 0px 0px 2px 2px #00abff;
+  animation: append .3s ease;
 }
-
+@keyframes append {
+  from {opacity:0;filter: blur(20px);}
+  to {opacity: 1;filter: blur(0px);}
+}
 .board-dir .selected img{
   width: 100%;
   opacity: .2;
