@@ -2,12 +2,12 @@
 
 
 export function equal(a, b) {
-    for (let i of a ?? []) {
-        if (i?.[0] == b?.[0] && i?.[1] == b?.[1]) {
-            return true;
-        }
-    }
-    return false;
+    return b.every(e => a.includes(e))
+}
+export function include(a, b, isNull = true) {
+    if (isNull && a.length == 0)
+        return true
+    return a.some(e => b.includes(e))
 }
 export function clone(arr) {
     let newObj = (arr instanceof Array) ? [] : {};

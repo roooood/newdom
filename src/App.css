@@ -87,17 +87,16 @@ body,html{
   position: absolute;
   left: 20px;
   right: 20px;
-  bottom: 0;
+  bottom: -300px;
   border-radius: 10px 10px 0 0;
   background:rgba(62, 72, 75, 0.753);
   padding:5vh 0 20vh;
   opacity: 0;
-  transform: translateY(300px) scale(.3);
   transition: all ease-in-out .5s;
 }
 .simi.active{
   opacity: 1;
-  transform: translateY(0px);
+  bottom:0;
 }
 
 .simi-row{
@@ -139,13 +138,19 @@ body,html{
   width:2.5vw;
   box-shadow: 0 0 10px rgb(112, 112, 112);
   border-radius: 5px;
+  
 }
 .me .hand-tile img{
   width:4vw;
+  opacity: .5;
   transition: all ease-in-out .4s;
 }
 .me .hand-tile img.selected{
   margin-top: -30px;
+  opacity: 1;
+}
+.me .hand-tile img.can-move{
+  opacity: 1;
 }
 .abs{
   position: absolute;

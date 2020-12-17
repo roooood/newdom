@@ -1,5 +1,5 @@
 import React, { useReducer, createContext } from "react";
-import { equal } from './helper';
+import { equal, include } from './helper';
 
 export const storeContext = createContext();
 
@@ -17,7 +17,8 @@ const initialState = {
     turn: '',
     picker: false,
     width: null,
-    height: null
+    height: null,
+    moveable: [],
 };
 
 const reducer = (state, { type, data }) => {
@@ -26,14 +27,20 @@ const reducer = (state, { type, data }) => {
             return { ...state, ...data };
         }
         case 'temp-board': {
-            state.selected.push(data);
+            state.selected = data;
             return { ...state };
         }
         case 'board': {
-            if (!state.board.find(e => equal([data], e))) {
+            if (!state.board.find(e => equal(data, e))) {
                 state.board.push(data);
                 state.selected = [];
-                state.deck['me'] = state.deck['me'].filter(e => !equal([data], e));
+                state.deck['me'] = state.deck['me'].filter(e => !equal(data, e));
+                if (!state.moveable.length) {
+                    state.moveable = data;
+                }
+                else {
+                    // state.moveable
+                }
             }
             return { ...state };
         }
