@@ -125,11 +125,17 @@ body,html{
   display: flex;
   align-items: center;
   flex-direction: row;
+  justify-content: center;
+  transition: all ease-in-out .4s;
 }
-.opponet .user-hand{
+.opponet.user-hand{
+  min-width: 120px;
+}
+.me.user-hand{
+  min-width: 200px;
 }
 .opponet .hand-tile{
-  margin-right:-8px;
+  margin-left:-8px;
 }
 .me .hand-tile{
   margin:2px;
@@ -158,6 +164,9 @@ body,html{
   top:0;
   border-radius: 8px;
   transition: all .4s;
+}
+.abs img{
+  width:100%;
 }
 .hand-tile.none{
   visibility: hidden ;

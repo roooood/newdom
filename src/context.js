@@ -1,5 +1,5 @@
 import React, { useReducer, createContext } from "react";
-import { equal, include } from './helper';
+import { equal, include, clone } from './helper';
 
 export const storeContext = createContext();
 
@@ -18,6 +18,7 @@ const initialState = {
     picker: false,
     width: null,
     height: null,
+    started: false,
     moveable: [],
 };
 
@@ -31,15 +32,24 @@ const reducer = (state, { type, data }) => {
             return { ...state };
         }
         case 'board': {
-            if (!state.board.find(e => equal(data, e))) {
-                state.board.push(data);
+            let { item, rotate, index } = data;
+            item = rotate > 0 ? item : [item[1], item[0]];
+            if (!state.board.find(e => equal(item, e))) {
+                if (index == 0)
+                    state.board.unshift(clone(item));
+                else
+                    state.board.push(clone(item));
                 state.selected = [];
-                state.deck['me'] = state.deck['me'].filter(e => !equal(data, e));
+                state.deck['me'] = state.deck['me'].filter(e => !equal(item, e));
                 if (!state.moveable.length) {
-                    state.moveable = data;
+                    state.moveable = clone(item);
                 }
                 else {
-                    // state.moveable
+                    let t = index == 0 ? 0 : 1;
+                    state.moveable[t] = item.find(e => e != state.moveable[t])
+                }
+                if (!(include(state.moveable, state.deck['me'], false))) {
+                    state.picker = true;
                 }
             }
             return { ...state };

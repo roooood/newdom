@@ -10,7 +10,7 @@ import { getPositionAtCenter } from './helper';
 const { simi, deck, dices } = initialData();
 
 export default (props) => {
-    const [{ index }, dispatch] = useContext(storeContext);
+    const [{ index, started }, dispatch] = useContext(storeContext);
     const { start } = useContext(animateContext);
     const board = useRef(null);
 
@@ -30,16 +30,16 @@ export default (props) => {
             simi[ind] = true;
         }
         else {
-            dispatch({ type: 'all', data: { picker: false, board: [] } });
-
+            dispatch({ type: 'all', data: { picker: false, started: true } });
         }
     }
 
     useEffect(() => {
         const { width, height } = getPositionAtCenter(board.current);
-        dispatch({ type: 'all', data: { dices, picker: true, width, height } });
+        // dispatch({ type: 'all', data: { dices, picker: true, width, height } });
+        dispatch({ type: 'all', data: { dices, deck: { me: deck[0], opponet: deck[1] }, simi, width, height, started: true } });
         setTimeout(() => {
-            animate();
+            // animate();
         }, 500);
     }, []);
 
@@ -48,7 +48,11 @@ export default (props) => {
             start(400)
                 .then(() => {
                     dispatch({ type: 'deck' });
-                    animate();
+                    if (!started)
+                        animate();
+                    else
+                        dispatch({ type: 'all', data: { picker: false } });
+
                 })
         }
     }, [index]);

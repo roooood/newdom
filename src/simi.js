@@ -20,7 +20,7 @@ function Simi() {
                 <div className={"simi-row"} key={i}>
                     {items.map((item, j) => {
                         let count = (i * 14) + j;
-                        let boll = Boolean(item)
+                        let boll = Boolean(item);
                         return (
                             <div className={"simi-col " + (boll ? '' : 'used')} key={j}  >
                                 {boll &&

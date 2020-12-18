@@ -2,12 +2,19 @@
 
 
 export function equal(a, b) {
-    return b.every(e => a.includes(e))
+    if (!a.length)
+        return false;
+    if (a[0] == a[1])
+        return b[0] == a[0] && b[1] == a[1];
+    return a.every(e => b.includes(e))
 }
 export function include(a, b, isNull = true) {
     if (isNull && a.length == 0)
-        return true
-    return a.some(e => b.includes(e))
+        return true;
+    if (Array.isArray(b[0])) {
+        return a.some(e => b.findIndex(d => d.includes(e)) >= 0)
+    }
+    return a.some(e => b?.includes(e))
 }
 export function clone(arr) {
     let newObj = (arr instanceof Array) ? [] : {};

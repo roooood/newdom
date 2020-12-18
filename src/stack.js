@@ -6,12 +6,13 @@ import tiles from './tiles';
 
 function Stack({ type }) {
     const [{ deck, selected, moveable, index, turn, width: w }, dispatch] = useContext(storeContext);
-    const width = Math.min(Math.round(w / 25), 34);
+    const width = type == 'me' ? Math.min(Math.round(w / 25), 34) : 22;
     const { to, from } = useContext(animateContext);
     const toBoard = (item) => {
         dispatch({ type: 'temp-board', data: item })
     }
     const data = deck[type];
+    const temp = (index >= 0 && turn == type);
     return (
         <div className={"plate " + type}>
             <div className="profile">
@@ -20,7 +21,7 @@ function Stack({ type }) {
                 </div>
             </div>
             <div className="tile">
-                <div className={"user-hand " + type}>
+                <div className={"user-hand " + type} style={{ width: (width * (data.length + (temp ? 2 : 1))) + (data.length * (type == 'me' ? 4 : -8)) }} >
                     {width && data.map((item, i) =>
                         <div className={"hand-tile"} key={item === true ? i : item.join('-')} >
                             {type == 'me'
@@ -32,13 +33,13 @@ function Stack({ type }) {
                                     onClick={() => include(moveable, item) ? toBoard(item) : null}
                                     src={tiles(item)}
                                 />
-                                : <img style={{ width: width / 1.5 }} src={tiles()} />
+                                : <img style={{ width }} src={tiles()} />
                             }
                         </div>
                     )}
-                    {(index >= 0 && turn == type) &&
+                    {temp &&
                         <div className={"hand-tile none"}  >
-                            <img style={{ width: type == 'me' ? width : width / 1.5 }} ref={to} src={tiles()} />
+                            <img style={{ width }} ref={to} src={tiles()} />
                         </div>
                     }
                 </div>
