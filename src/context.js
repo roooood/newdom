@@ -32,25 +32,20 @@ const reducer = (state, { type, data }) => {
             return { ...state };
         }
         case 'board': {
-            let { item, rotate, index } = data;
+            let { item, rotate, prev = false, next = false } = data;
             item = rotate > 0 ? item : [item[1], item[0]];
-            if (!state.board.find(e => equal(item, e))) {
-                if (index == 0)
-                    state.board.unshift(clone(item));
-                else
-                    state.board.push(clone(item));
+            if (!state.board.find(e => equal(item, e.item))) {
+                state.board.push({ item: clone(item), prev, next });
                 state.selected = [];
                 state.deck['me'] = state.deck['me'].filter(e => !equal(item, e));
                 if (!state.moveable.length) {
                     state.moveable = clone(item);
                 }
                 else {
-                    let t = index == 0 ? 0 : 1;
-                    state.moveable[t] = item.find(e => e != state.moveable[t])
+                    let t = next == 0 ? 0 : 1;
+                    state.moveable[t] = item[0] == item[1] ? item[0] : item.find(e => e != state.moveable[t]);
                 }
-                if (!(include(state.moveable, state.deck['me'], false))) {
-                    state.picker = true;
-                }
+                console.log('moveable', state.moveable)
             }
             return { ...state };
         }

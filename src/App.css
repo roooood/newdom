@@ -1,3 +1,30 @@
+::-webkit-scrollbar {
+    transition: all .5s;
+    width: 0px;
+    height: 1px;
+    z-index: 10;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #b3ada7;
+}
+
+* {
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
+}
+
+* {
+    scrollbar-color: #00000052 #00000012;
+    scrollbar-width: thin;
+    -ms-overflow-style: none;
+}
+
 body,html{
   background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)rgb(53, 77, 77);
   padding:0;
@@ -34,6 +61,7 @@ body,html{
   flex:.74;
   display: flex;
   justify-content: center;
+  z-index: 0;
 }
 .plate{
   background:rgba(19, 24, 45, 0.31);
@@ -133,6 +161,7 @@ body,html{
 }
 .me.user-hand{
   min-width: 200px;
+  max-width:60vw;
 }
 .opponet .hand-tile{
   margin-left:-8px;

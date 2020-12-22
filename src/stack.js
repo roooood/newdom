@@ -5,12 +5,22 @@ import { equal, include } from './helper';
 import tiles from './tiles';
 
 function Stack({ type }) {
-    const [{ deck, selected, moveable, index, turn, width: w }, dispatch] = useContext(storeContext);
-    const width = type == 'me' ? Math.min(Math.round(w / 25), 34) : 22;
+    const [{ deck, selected, moveable, index, turn, width: boardWidth }, dispatch] = useContext(storeContext);
+    const width = type == 'me' ? Math.min(Math.max(Math.round(boardWidth / 25), 28), 40) : 22;
     const { to, from } = useContext(animateContext);
     const toBoard = (item) => {
         dispatch({ type: 'temp-board', data: item })
     }
+    useEffect(() => {
+        if (type == 'me' && moveable.length > 0) {
+            setTimeout(() => {
+                if (!(include(moveable, deck.me, false))) {
+                    dispatch({ type: 'all', data: { picker: true } });
+                }
+            }, 500);
+        }
+    }, [deck.me.length]);
+
     const data = deck[type];
     const temp = (index >= 0 && turn == type);
     return (

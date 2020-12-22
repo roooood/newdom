@@ -13,7 +13,7 @@ export default function dices() {
     let diceLen = dices.length;
     for (i = 0; i < 2; i++) {
         deck[i] = [];
-        while (deck[i].length < 7) {
+        while (deck[i].length < 5) {
             j = Math.floor(Math.random() * diceLen);
             if (dices[j] != null) {
                 deck[i].push(dices[j])
