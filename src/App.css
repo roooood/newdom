@@ -135,10 +135,10 @@ body,html{
 .simi-col{
   margin:2px;
   width:25px;
-  height: 50px;
+  height: 49px;
   position: relative;
-  background: #c4c4c445;
-  border-radius: 5px;
+  background: #202020;
+  border-radius: 7px;
 }
 .simi-col img{
   width:25px;

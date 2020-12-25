@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useRef } from 'react';
+import React, { useEffect, useContext, useRef, useLayoutEffect } from 'react';
 import Stack from './stack';
 import Simi from './simi';
 import Board from './board';
@@ -33,27 +33,46 @@ export default (props) => {
             dispatch({ type: 'all', data: { picker: false, started: true } });
         }
     }
+    useLayoutEffect(() => {
+        function updateBoardSize() {
+            const boardPos = getPosition(board.current);
+            const diceWidth = Math.min(Math.max(Math.round(boardPos.width / 25), 28), 40);
+            dispatch({
+                type: 'all',
+                data: {
+                    boardPos,
+                    diceWidth
+                }
+            });
+        }
+        window.addEventListener('resize', updateBoardSize);
+        updateBoardSize();
+        return () => window.removeEventListener('resize', updateBoardSize);
+    }, []);
 
     useEffect(() => {
-        const boardPos = getPosition(board.current);
-        const diceWidth = Math.min(Math.max(Math.round(boardPos.width / 25), 28), 40);
-
+        // dispatch({
+        //     type: 'all',
+        //     data: {
+        //         dices,
+        //         deck: {
+        //             me: deck[0],
+        //             opponet: deck[1]
+        //         },
+        //         simi,
+        //         started: true,
+        //     }
+        // });
         dispatch({
             type: 'all',
             data: {
                 dices,
-                deck: {
-                    me: deck[0],
-                    opponet: deck[1]
-                },
-                simi,
-                boardPos,
-                diceWidth,
-                started: true,
+                started: false,
+                picker: true
             }
         });
         setTimeout(() => {
-            // animate();
+            animate();
         }, 500);
     }, []);
 

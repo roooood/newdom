@@ -11,120 +11,7 @@ const initialState = {
         opponet: []
     },
     dices: [],
-    board: [
-        {
-            "item": [
-                3,
-                3
-            ],
-            "prev": false,
-            "next": false
-        },
-        {
-            "item": [
-                3,
-                0
-            ],
-            "prev": false,
-            "next": "33"
-        },
-        {
-            "item": [
-                0,
-                1
-            ],
-            "prev": false,
-            "next": "30"
-        },
-        {
-            "item": [
-                1,
-                6
-            ],
-            "prev": false,
-            "next": "01"
-        },
-        {
-            "item": [
-                6,
-                0
-            ],
-            "prev": false,
-            "next": "16"
-        },
-        {
-            "item": [
-                0,
-                2
-            ],
-            "prev": false,
-            "next": "60"
-        },
-        {
-            "item": [
-                2,
-                2
-            ],
-            "prev": false,
-            "next": "02"
-        },
-        {
-            "item": [
-                2,
-                1
-            ],
-            "prev": false,
-            "next": "22"
-        },
-        {
-            "item": [
-                1,
-                5
-            ],
-            "prev": false,
-            "next": "21"
-        },
-        {
-            "item": [
-                5,
-                4
-            ],
-            "prev": false,
-            "next": "15"
-        },
-        {
-            "item": [
-                4,
-                0
-            ],
-            "prev": false,
-            "next": "54"
-        },
-        {
-            "item": [
-                6,
-                3
-            ],
-            "prev": "33",
-            "next": false
-        },
-        {
-            "item": [
-                0,
-                0
-            ],
-            "prev": false,
-            "next": "40"
-        },
-        {
-            "item": [
-                6,
-                6
-            ],
-            "prev": "63",
-            "next": false
-        }
-    ],
+    board: [],
     selected: [],
     index: -1,
     turn: '',
@@ -132,7 +19,7 @@ const initialState = {
     boardPos: {},
     diceWidth: null,
     started: false,
-    moveable: [6, 0],
+    moveable: [],
 };
 
 const reducer = (state, { type, data }) => {
@@ -155,7 +42,7 @@ const reducer = (state, { type, data }) => {
                     state.moveable = clone(item);
                 }
                 else {
-                    let t = next == 0 ? 0 : 1;
+                    let t = next === false ? 0 : 1;
                     state.moveable[t] = item[0] == item[1] ? item[0] : item.find(e => e != state.moveable[t]);
                 }
             }

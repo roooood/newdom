@@ -13,6 +13,7 @@ function Dices({ data, setWidth }) {
     let boardX = 0;
     let pos = {};
     let sign = { prev: 1, next: -1 };
+    let horizontalDone = false;
     const renderDice = ({ item, prev = false, next = false, isTemp = false }, i) => {
         let type = prev !== false ? 'prev' : 'next';
         let link = prev !== false ? prev : next;
@@ -20,35 +21,66 @@ function Dices({ data, setWidth }) {
         let rotate = same ? 0 : 90;
         let tempWidth = same ? width : fullWidth;
         let key = item.join('');
-        pos[key] = { isSame: same, x: 1, y: 0 }
+        pos[key] = { item, same, x: 1, y: 0, level: 1, vertical: false }
         let tempX = 0;
         let tempY = 0;
-        if (allWidth + tempWidth > boardPos.width) {
-            tempY = width + halfWidth;
-            sign[type] = -sign[type];
+
+        if (horizontalDone) {
+            if (pos[link].level == 1) {
+                tempX = sign[type] * (halfWidth + (pos[link].same ? width : fullWidth));
+                if (same)
+                    tempX = tempX - (sign[type] * halfWidth) + sign[type] * 2;
+                sign[type] = -sign[type];
+                pos[key].vertical = true;
+                rotate = 0;
+                if (prev) {
+                    rotate = item[1] == pos[link].item[1] ? 0 : 180;
+                }
+                else {
+                    rotate = item[1] == pos[link].item[1] ? 180 : 0;
+                }
+                tempY = pos[link].y + (sign[type] * (pos[link].same ? fullWidth : width + halfWidth));
+            }
+            else {
+                tempY = pos[link].vertical
+                    ? pos[link].y + (sign[type] * (pos[key].same ? width : halfWidth - 2))
+                    : pos[link].y;
+                tempX = pos[link].vertical ? -sign[type] * (halfWidth - 1) : 0;
+            }
+            pos[key].level = 2;
+            pos[key].y = tempY;
         }
         if (isTemp) {
             if (prev) {
-                rotate = item[0] == moveable[0] ? -rotate : rotate;
+                rotate = item[0] == moveable[0] ? -sign[type] * rotate : sign[type] * rotate;
             }
             else {
-                rotate = item[1] == moveable[1] ? -rotate : rotate;
+                rotate = item[1] == moveable[1] ? sign[type] * rotate : -sign[type] * rotate;
             }
         }
-        else {
+        else if (rotate == 90) {
             rotate = item[0] < item[1] ? -rotate : rotate;
         }
+
         if (i > 0) {
-            tempX = (pos[link].x + sign[type] * (pos[link].isSame ? width + halfWidth - 1 : fullWidth));
+            tempX += (pos[link].x + sign[type] * (pos[link].same ? width + halfWidth : fullWidth));
             if (same)
-                tempX = tempX - sign[type] * halfWidth;
+                tempX = tempX - (sign[type] * halfWidth) + sign[type] * 2;
+            else if (pos[link].vertical && pos[link].same)
+                tempX = tempX + (sign[type] * halfWidth);
+
             pos[key].x = tempX;
         }
+        else {
+            tempX += 1;
+        }
         let transform = 'translateX(' + tempX + 'px) translateY(' + tempY + 'px) rotate(' + rotate + 'deg)';
-        boardX += (next ? -1 : 1) * (same ? halfWidth : width);
-        if (!tempY)
+        if (!horizontalDone) {
+            boardX += (next ? -1 : 1) * (same ? halfWidth : width);
             setWidth(-(boardX));
-        allWidth += tempWidth;
+            allWidth += tempWidth;
+            horizontalDone = allWidth + tempWidth + halfWidth > boardPos.width
+        }
         if (isTemp) {
             return (
                 <div
