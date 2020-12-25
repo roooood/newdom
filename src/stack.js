@@ -5,8 +5,7 @@ import { equal, include } from './helper';
 import tiles from './tiles';
 
 function Stack({ type }) {
-    const [{ deck, selected, moveable, index, turn, width: boardWidth }, dispatch] = useContext(storeContext);
-    const width = type == 'me' ? Math.min(Math.max(Math.round(boardWidth / 25), 28), 40) : 22;
+    const [{ deck, selected, moveable, index, turn, diceWidth: width }, dispatch] = useContext(storeContext);
     const { to, from } = useContext(animateContext);
     const toBoard = (item) => {
         dispatch({ type: 'temp-board', data: item })
@@ -23,6 +22,7 @@ function Stack({ type }) {
 
     const data = deck[type];
     const temp = (index >= 0 && turn == type);
+    const tileWidth = width * (data.length + (temp ? 2 : 1)) + (data.length * 4);
     return (
         <div className={"plate " + type}>
             <div className="profile">
@@ -31,7 +31,7 @@ function Stack({ type }) {
                 </div>
             </div>
             <div className="tile">
-                <div className={"user-hand " + type} style={{ width: (width * (data.length + (temp ? 2 : 1))) + (data.length * (type == 'me' ? 4 : -8)) }} >
+                <div className={"user-hand " + type} style={type == 'me' ? { width: tileWidth } : {}} >
                     {width && data.map((item, i) =>
                         <div className={"hand-tile"} key={item === true ? i : item.join('-')} >
                             {type == 'me'
@@ -43,7 +43,7 @@ function Stack({ type }) {
                                     onClick={() => include(moveable, item) ? toBoard(item) : null}
                                     src={tiles(item)}
                                 />
-                                : <img style={{ width }} src={tiles()} />
+                                : <img src={tiles()} />
                             }
                         </div>
                     )}

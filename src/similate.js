@@ -6,7 +6,7 @@ import { storeContext } from './context';
 import { animateContext } from './animate';
 
 import initialData from './start';
-import { getPositionAtCenter } from './helper';
+import { getPosition } from './helper';
 const { simi, deck, dices } = initialData();
 
 export default (props) => {
@@ -35,9 +35,23 @@ export default (props) => {
     }
 
     useEffect(() => {
-        const { width, height } = getPositionAtCenter(board.current);
-        // dispatch({ type: 'all', data: { dices, picker: true, width, height } });
-        dispatch({ type: 'all', data: { dices, deck: { me: deck[0], opponet: deck[1] }, simi, width, height, started: true } });
+        const boardPos = getPosition(board.current);
+        const diceWidth = Math.min(Math.max(Math.round(boardPos.width / 25), 28), 40);
+
+        dispatch({
+            type: 'all',
+            data: {
+                dices,
+                deck: {
+                    me: deck[0],
+                    opponet: deck[1]
+                },
+                simi,
+                boardPos,
+                diceWidth,
+                started: true,
+            }
+        });
         setTimeout(() => {
             // animate();
         }, 500);

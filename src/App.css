@@ -170,7 +170,7 @@ body,html{
   margin:2px;
 }
 .opponet .hand-tile img{
-  width:2.5vw;
+  width:22px;
   box-shadow: 0 0 10px rgb(112, 112, 112);
   border-radius: 5px;
   
@@ -226,4 +226,9 @@ body,html{
 .board-dir .selected img{
   width: 100%;
   opacity: .2;
+}
+.board-half{
+  background: #fff;
+  width:1px;
+  height: 100%;
 }

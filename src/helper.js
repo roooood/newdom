@@ -80,20 +80,10 @@ export const shuffle = (arr, level = 1) => {
     }
     return arr;
 }
-export function move(el, x, y) {
-    var xid = setInterval(xx, 5);
 
-    function xx() {
-        if (x[0] == x[1] && y[0] == y[1]) {
-            clearInterval(xid);
-        } else {
-            if (x[0] != x[1])
-                x[0] = x[0] < x[1] ? x[0] + 1 : x[0] - 1;
-            if (y[0] != y[1])
-                y[0] = y[0] < y[1] ? y[0] + 1 : y[0] - 1;
-            el.style.transform = "translate(" + x[0] + "px," + y[0] + "px)";
-        }
-    }
+export function getPosition(element) {
+    const { left, right, width, height } = element.getBoundingClientRect();
+    return { left, right, width, height };
 }
 export function getPositionAtCenter(element) {
     const { top, left, width, height } = element.getBoundingClientRect();

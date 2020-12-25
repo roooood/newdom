@@ -2,22 +2,32 @@ import React, { useContext, useEffect, memo, useState } from 'react';
 import { storeContext } from './context';
 import { animateContext } from './animate';
 import tiles from './tiles';
-import { equal } from './helper';
 
 function Dices({ data, setWidth }) {
     const { to, start } = useContext(animateContext);
-    const [{ selected, moveable, width: boardWidth }, dispatch] = useContext(storeContext);
-    const width = Math.min(Math.max(Math.round(boardWidth / 25), 28), 40);
+    const [{ boardPos, moveable, diceWidth: width }, dispatch] = useContext(storeContext);
     const fullWidth = width * 2;
     const halfWidth = width / 2 + 1;
     const [selectedTo, setSelectedTo] = useState(null);
     let allWidth = 0;
+    let boardX = 0;
     let pos = {};
-    const renderDice = ({ item, prev = false, next = false }, i) => {
+    let sign = { prev: 1, next: -1 };
+    const renderDice = ({ item, prev = false, next = false, isTemp = false }, i) => {
+        let type = prev !== false ? 'prev' : 'next';
         let link = prev !== false ? prev : next;
         let same = item[0] == item[1];
         let rotate = same ? 0 : 90;
-        if (equal(item, selected)) {
+        let tempWidth = same ? width : fullWidth;
+        let key = item.join('');
+        pos[key] = { isSame: same, x: 1, y: 0 }
+        let tempX = 0;
+        let tempY = 0;
+        if (allWidth + tempWidth > boardPos.width) {
+            tempY = width + halfWidth;
+            sign[type] = -sign[type];
+        }
+        if (isTemp) {
             if (prev) {
                 rotate = item[0] == moveable[0] ? -rotate : rotate;
             }
@@ -28,25 +38,18 @@ function Dices({ data, setWidth }) {
         else {
             rotate = item[0] < item[1] ? -rotate : rotate;
         }
-        let key = item.join('');
-        let tempX = 0;
-        pos[key] = { isSame: same, x: 1, y: 0 }
         if (i > 0) {
-            if (prev) {
-                tempX = (pos[link].x + (pos[link].isSame ? width + halfWidth - 1 : fullWidth));
-                tempX -= same ? halfWidth - 2 : 0;
-                pos[key].x = tempX;
-            }
-            else {
-                tempX = -(pos[link].x + (pos[link].isSame ? width + halfWidth - 1 : fullWidth));
-                tempX += same ? halfWidth - 2 : 0;
-                pos[key].x = -tempX;
-            }
+            tempX = (pos[link].x + sign[type] * (pos[link].isSame ? width + halfWidth - 1 : fullWidth));
+            if (same)
+                tempX = tempX - sign[type] * halfWidth;
+            pos[key].x = tempX;
         }
-        let transform = 'translateX(' + tempX + 'px) rotate(' + rotate + 'deg)';
-        allWidth += (prev ? -1 : 1) * ((same ? halfWidth : width) + width);
-        setWidth((allWidth / 2));
-        if (equal(selected, item)) {
+        let transform = 'translateX(' + tempX + 'px) translateY(' + tempY + 'px) rotate(' + rotate + 'deg)';
+        boardX += (next ? -1 : 1) * (same ? halfWidth : width);
+        if (!tempY)
+            setWidth(-(boardX));
+        allWidth += tempWidth;
+        if (isTemp) {
             return (
                 <div
                     key={i}
@@ -61,8 +64,8 @@ function Dices({ data, setWidth }) {
         }
         return (
             <img
-                key={item.join('-')}
-                className={"abs"}
+                key={key}
+                className={"abs dice-" + key}
                 style={{ transform, width }}
                 src={tiles(item)}
             />
@@ -79,7 +82,7 @@ function Dices({ data, setWidth }) {
 
     return (
         <>
-            {boardWidth && data.map((item, i) => renderDice(item, i))}
+            {width && data.map((item, i) => renderDice(item, i))}
         </>
 
     )

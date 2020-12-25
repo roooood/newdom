@@ -13,13 +13,12 @@ function Board() {
             temp.push({ item: selected })
         }
         if (selected.includes(moveable[0]) && temp.length > 0) {
-            temp.push({ item: selected, prev: (_.findLast(board, e => e.prev) ?? board[0]).item.join('') })
+            temp.push({ item: selected, isTemp: true, prev: (_.findLast(board, e => e.prev) ?? board[0]).item.join('') })
         }
         if (selected.includes(moveable[1])) {
-            temp.push({ item: selected, next: (_.findLast(board, e => e.next) ?? board[0]).item.join('') })
+            temp.push({ item: selected, isTemp: true, next: (_.findLast(board, e => e.next) ?? board[0]).item.join('') })
         }
     }
-
     let transform = 'translateX(' + width + 'px)';
     return (
         <div
