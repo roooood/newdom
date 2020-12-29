@@ -7,7 +7,6 @@ function Board() {
     const [{ board, selected, moveable }] = useContext(storeContext);
     const [width, setWidth] = useState(0);
     const [scale, setScale] = useState(1);
-
     let temp = [...board];
     if (selected.length > 0) {
         if (board.length == 0) {
