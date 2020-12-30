@@ -5,38 +5,32 @@ import tiles from './tiles';
 import _ from 'lodash';
 
 
-function Dices({ data, setWidth }) {
+export default function useDices({ data }) {
     const { to, start } = useContext(animateContext);
-    const [{ boardPos, moveable, diceWidth: width }, dispatch] = useContext(storeContext);
+    const [{ boardPos, diceWidth: width }, dispatch] = useContext(storeContext);
     const fullWidth = width * 2;
     const halfWidth = width / 2 + 1;
     const [selectedTo, setSelectedTo] = useState(null);
     let allWidth = { up: 0, line: 0, down: 0 };
-    let boardX = 0;
+    let board = { x: 0, y: 0 };
     let pos = {};
     let sign = { prev: 1, next: -1 };
+    let last = { prev: null, next: null };
     let horizontalDone = false;
-    const reset = () => {
-        allWidth = { up: 0, line: 0, down: 0 };
-        boardX = 0;
-        pos = {};
-        sign = { prev: 1, next: -1 };
-        horizontalDone = false;
-    }
+    let scale = 0;
     const renderDice = ({ item, prev = false, next = false, isTemp = false }, i) => {
-        if (i == 0)
-            reset();
+
         let type = prev !== false ? 'prev' : 'next';
         let link = prev !== false ? prev : next;
         let same = item[0] == item[1];
         let rotate = same ? 0 : 90;
         let tempWidth = same ? width : fullWidth;
         let key = item.join('');
-        pos[key] = { item, same, x: 1, y: 0, level: 1, vertical: false, end: item[0], done: false }
+        pos[key] = { item, same, x: 1, y: 0, level: 1, vertical: false, end: item[0], done: false, ...(prev ? { prev } : { next }) }
         let tempX = 0;
         let tempY = 0;
 
-        if (pos?.[link]) {
+        if (i > 0) {
             if (pos[link].done) {
                 tempX = sign[type] * (halfWidth + (pos[link].same ? width : fullWidth));
                 if (same)
@@ -53,6 +47,9 @@ function Dices({ data, setWidth }) {
                 tempY = prev
                     ? pos[link].y - (pos[link].same ? fullWidth : width + halfWidth)
                     : pos[link].y + (pos[link].same ? fullWidth : width + halfWidth);
+
+                board.y += tempY;
+                // setTranslate(board);
             }
             else if (pos[link].level > 1) {
                 tempY = pos[link].vertical
@@ -64,9 +61,6 @@ function Dices({ data, setWidth }) {
             }
             pos[key].level = pos[link].level;
             pos[key].y = tempY;
-
-        }
-        if (i > 0) {
             if (prev) {
                 rotate = pos[link].end == item[0] ? -sign[type] * rotate : sign[type] * rotate;
             }
@@ -75,8 +69,7 @@ function Dices({ data, setWidth }) {
             }
             let not = item.filter(e => pos[link].item.indexOf(e) < 0);
             pos[key].end = not.length > 0 ? not[0] : item[0];
-        }
-        if (i > 0) {
+
             tempX += (pos[link].x + sign[type] * (pos[link].same ? width + halfWidth : fullWidth));
             if (same)
                 tempX = tempX - (sign[type] * halfWidth) + sign[type] * 2;
@@ -84,26 +77,35 @@ function Dices({ data, setWidth }) {
                 tempX = tempX + (sign[type] * halfWidth - 1);
 
             pos[key].x = tempX;
+
+            last[type] = key;
         }
         else {
             tempX += 1;
+            last = { next: key, prev: key }
         }
+
         let level = !horizontalDone ? 'line' : prev ? 'up' : 'down';
         allWidth[level] += tempWidth;
-        pos[key].done = allWidth[level] + fullWidth > boardPos.width;
-        if (pos[key].done) {
-            pos[key].level++;
-            if (level != 'line')
+        let done = allWidth[level] + halfWidth > boardPos.width;
+        if (done) {
+            if (level == 'line') {
+                pos[last.prev].done = true;
+                pos[last.prev].level++;
+                pos[last.next].done = true;
+                pos[last.next].level++;
+            }
+            else {
+                pos[key].done = true;
+                pos[key].level++;
                 allWidth[level] = 0;
+            }
+            scale = Math.max(scale, allWidth[level] - boardPos.width) + 5;
         }
-        // if (level == 'line' && pos[key].done) {
-        //     _.findLast(board, e => e.prev)
-        // }
         let transform = 'translateX(' + tempX + 'px) translateY(' + tempY + 'px) rotate(' + rotate + 'deg)';
         if (!horizontalDone) {
-            boardX += (next ? -1 : 1) * (same ? halfWidth : width);
-            horizontalDone = pos[key].done;
-            setWidth(-(boardX));
+            board.x += (next ? -1 : 1) * (same ? halfWidth : width);
+            horizontalDone = done;
         }
         if (isTemp) {
             return (
@@ -118,10 +120,11 @@ function Dices({ data, setWidth }) {
                 </div>
             )
         }
+
         return (
             <img
                 key={key}
-                className={"abs dice-" + pos[key].done}
+                className={"abs"}
                 style={{ transform, width }}
                 src={tiles(item)}
             />
@@ -136,14 +139,9 @@ function Dices({ data, setWidth }) {
                 })
     }, [selectedTo]);
 
-    return (
-        <>
-            {width && data.map((item, i) => renderDice(item, i))}
-        </>
-
-    )
+    const dices = width ? data.map((item, i) => renderDice(item, i)) : null;
+    board.y = width ? Math.abs((Math.abs(pos[last.prev].y) - Math.abs(pos[last.next].y)) / 2) : 0;
+    board.x -= scale / 2.5;
+    scale = scale > 0 ? Math.max(1 - (scale / 180), .85) : 1;
+    return { dices, board, scale }
 }
-
-
-
-export default memo(Dices);

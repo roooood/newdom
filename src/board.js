@@ -1,12 +1,10 @@
 import React, { useContext, useState } from 'react';
 import { storeContext } from './context';
-import Dices from './dices';
+import useDices from './dices';
 import _ from 'lodash';
 
 function Board() {
     const [{ board, selected, moveable }] = useContext(storeContext);
-    const [width, setWidth] = useState(0);
-    const [scale, setScale] = useState(1);
     let temp = [...board];
     if (selected.length > 0) {
         if (board.length == 0) {
@@ -19,13 +17,14 @@ function Board() {
             temp.push({ item: selected, isTemp: true, next: (_.findLast(board, e => e.next) ?? board[0]).item.join('') })
         }
     }
-    let transform = 'translateX(' + width + 'px) scale(' + scale + ')';
+    const { dices, board: translate, scale } = useDices({ data: temp })
+    let transform = 'translateX(' + -translate.x + 'px) translateY(' + -translate.y + 'px) scale(' + scale + ')';
     return (
         <div
             className={"board-dir"}
             style={{ transform }}
         >
-            <Dices data={temp} setWidth={setWidth} setScale={setScale} />
+            {dices}
         </div>
 
     )

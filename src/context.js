@@ -162,18 +162,18 @@ const reducer = (state, { type, data }) => {
         }
         case 'board': {
             let { item, prev = false, next = false } = data;
-            if (!state.board.find(e => equal(item, e.item))) {
-                state.board.push({ item: clone(item), prev, next });
-                state.selected = [];
-                state.deck['me'] = state.deck['me'].filter(e => !equal(item, e));
-                if (!state.moveable.length) {
-                    state.moveable = clone(item);
-                }
-                else {
-                    let t = next === false ? 0 : 1;
-                    state.moveable[t] = item[0] == item[1] ? item[0] : item.find(e => e != state.moveable[t]);
-                }
+            // if (!state.board.find(e => equal(item, e.item))) {
+            state.board.push({ item: clone(item), prev, next });
+            state.selected = [];
+            state.deck['me'] = state.deck['me'].filter(e => !equal(item, e));
+            if (!state.moveable.length) {
+                state.moveable = clone(item);
             }
+            else {
+                let t = next === false ? 0 : 1;
+                state.moveable[t] = item[0] == item[1] ? item[0] : item.find(e => e != state.moveable[t]);
+            }
+            // }
             return { ...state };
         }
         case 'anim': {

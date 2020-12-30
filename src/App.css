@@ -26,7 +26,7 @@
 }
 
 body,html{
-  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab)rgb(53, 77, 77);
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #dbd361)rgb(53, 77, 77);
   padding:0;
   margin:0;
   width:100vw;
@@ -163,6 +163,8 @@ body,html{
   align-items: center;
   flex-direction: row;
   justify-content: center;
+  margin-left: 8px;
+  margin-top:6px;
   transition: all ease-in-out .4s;
 }
 .opponet.user-hand{
@@ -177,6 +179,10 @@ body,html{
 }
 .me .hand-tile{
   margin:2px;
+  transition: all ease-in-out .4s;
+}
+.me .hand-tile.min{
+  transform:scale(.85);
 }
 .opponet .hand-tile img{
   width:22px;
@@ -212,12 +218,12 @@ body,html{
 
 .board-dir{
   transition: transform 450ms ease-in-out 16ms, opacity 650ms ease-in 1ms;
-  /* transform: scale(0.854286) translate3d(650px, 177px, 0px); */
   position: absolute;
   z-index: 15;
   left: 50%;
   top: calc(50% - 30px);
   opacity: 1;
+  transform-origin: center center;
 }
 .board-dir .abs{
   width:4vw;

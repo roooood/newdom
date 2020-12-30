@@ -36,7 +36,7 @@ export default (props) => {
     useLayoutEffect(() => {
         function updateBoardSize() {
             const boardPos = getPosition(board.current);
-            const diceWidth = Math.min(Math.max(Math.round(boardPos.width / 25), 28), 40);
+            const diceWidth = Math.min(Math.max(Math.round(boardPos.width / 25), 25), 40);
             dispatch({
                 type: 'all',
                 data: {
